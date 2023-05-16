@@ -31,7 +31,6 @@ const Login = () => {
     signIn("credentials", {
       email,
       password,
-      redirect: false,
     }).then((callback) => {
       setLoading(false);
 
