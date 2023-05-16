@@ -1,16 +1,18 @@
 import React from "react";
 import Head from "next/head";
+import Header from "@/components/Header";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Twitter</title>
 
         <link rel="icon" href="/twitter.png" />
       </Head>
-      Home
-    </div>
+
+      <Header label="Home" />
+    </>
   );
 };
 
