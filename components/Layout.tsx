@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "./Container";
 import Sidebar from "./sidebar/Sidebar";
+import Widget from "./Widget";
 
 interface Props {
   children: React.ReactNode;
@@ -12,9 +13,11 @@ const Layout = ({ children }: Props) => {
       <Container>
         <Sidebar />
 
-        <div className="col-span-3 md:col-span-2 border-x border-neutral-800">
+        <div className="col-span-3 lg:col-span-2 border-x border-neutral-800">
           {children}
         </div>
+
+        <Widget />
       </Container>
     </div>
   );
