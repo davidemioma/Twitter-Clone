@@ -2,14 +2,17 @@ import React from "react";
 import { useRouter } from "next/router";
 import { FaFeather } from "react-icons/fa";
 import useLoginModal from "@/hooks/useLoginModal";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const SidebarTweetBtn = () => {
   const router = useRouter();
 
   const loginModal = useLoginModal();
 
+  const { data: currentUser } = useCurrentUser();
+
   const onClickHandler = () => {
-    loginModal.onOpen();
+    if (!currentUser) return loginModal.onOpen();
   };
 
   return (

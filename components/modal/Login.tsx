@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import Modal from "./Modal";
 import Input from "../Input";
+import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
@@ -25,6 +27,24 @@ const Login = () => {
 
   const onSubmit = () => {
     setLoading(true);
+
+    signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    }).then((callback) => {
+      setLoading(false);
+
+      if (callback?.ok) {
+        toast.success("Login successful");
+
+        loginModal.onClose();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
   };
 
   const bodyContent = (

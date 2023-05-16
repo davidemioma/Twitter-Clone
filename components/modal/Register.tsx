@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from "react";
+import axios from "axios";
 import Modal from "./Modal";
 import Input from "../Input";
+import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
@@ -27,9 +30,34 @@ const Register = () => {
     loginModal.onOpen();
   }, [loading, registerModal, loginModal]);
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setLoading(true);
-  };
+
+    axios
+      .post("/api/register", {
+        name,
+        username,
+        email,
+        password,
+      })
+      .then(() => {
+        toast.success("Account created");
+
+        //Test after deployment
+        signIn("credentials", {
+          email,
+          password,
+        });
+
+        registerModal.onClose();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message || "Something went wrong!");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [name, username, email, password, registerModal, loginModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -90,7 +118,13 @@ const Register = () => {
       onSubmit={onSubmit}
       body={bodyContent}
       footer={footerContent}
-      disabled={loading}
+      disabled={
+        loading ||
+        !name.trim() ||
+        !username.trim() ||
+        !email.trim() ||
+        !password.trim()
+      }
     />
   );
 };
