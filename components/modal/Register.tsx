@@ -4,10 +4,14 @@ import Input from "../Input";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 
-const Login = () => {
+const Register = () => {
   const loginModal = useLoginModal();
 
   const registerModal = useRegisterModal();
+
+  const [name, setName] = useState("");
+
+  const [username, setUsername] = useState("");
 
   const [email, setEmail] = useState("");
 
@@ -18,10 +22,10 @@ const Login = () => {
   const onToggle = useCallback(() => {
     if (loading) return;
 
-    loginModal.onClose();
+    registerModal.onClose();
 
-    registerModal.onOpen();
-  }, [loading, loginModal, registerModal]);
+    loginModal.onOpen();
+  }, [loading, registerModal, loginModal]);
 
   const onSubmit = () => {
     setLoading(true);
@@ -29,6 +33,22 @@ const Login = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
+      <Input
+        type="text"
+        value={name}
+        placeholder="Name"
+        onChange={(e) => setName(e.target.value)}
+        disabled={loading}
+      />
+
+      <Input
+        type="text"
+        value={username}
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
+        disabled={loading}
+      />
+
       <Input
         type="email"
         value={email}
@@ -50,12 +70,12 @@ const Login = () => {
   const footerContent = (
     <div className="mt-4 text-neutral-400 text-center">
       <p>
-        First time using twitter?{" "}
+        Already have an account?{" "}
         <span
           className="text-white cursor-pointer hover:underline"
           onClick={onToggle}
         >
-          Create an account
+          Sign in
         </span>
       </p>
     </div>
@@ -63,16 +83,16 @@ const Login = () => {
 
   return (
     <Modal
-      isOpen={loginModal.isOpen}
-      onClose={() => loginModal.onClose()}
-      title="Login"
-      actionLabel="Sign In"
+      isOpen={registerModal.isOpen}
+      onClose={() => registerModal.onClose()}
+      title="Create an account"
+      actionLabel="Register"
       onSubmit={onSubmit}
       body={bodyContent}
-      disabled={loading}
       footer={footerContent}
+      disabled={loading}
     />
   );
 };
 
-export default Login;
+export default Register;

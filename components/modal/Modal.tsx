@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "../Button";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -24,6 +24,10 @@ const Modal = ({
   disabled,
 }: Props) => {
   const [showModal, setShowModal] = useState(isOpen);
+
+  useEffect(() => {
+    setShowModal(isOpen);
+  }, [isOpen]);
 
   const handleClose = useCallback(() => {
     if (disabled) return;
@@ -53,9 +57,11 @@ const Modal = ({
       <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-50 w-full md:w-4/6 lg:w-3/6 lg:max-w-3xl">
         <div
           className={`bg-black text-white w-full h-full sm:h-auto rounded-lg shadow-lg transition duration-300 ${
-            showModal ? "translate-y-0" : "translate-y-full"
+            showModal
+              ? "translate-y-0 opacity-100"
+              : "translate-y-full opacity-0"
           }
-          ${showModal ? "opacity-100" : "opacity-0"}`}
+          `}
         >
           <div className="w-full h-full flex flex-col">
             <div className="flex items-center justify-between p-10">
