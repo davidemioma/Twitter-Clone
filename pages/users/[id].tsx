@@ -6,6 +6,7 @@ import useUser from "@/hooks/useUser";
 import Loader from "@/components/Loader";
 import UserHero from "@/components/users/UserHero";
 import UserBio from "@/components/users/UserBio";
+import PostFeed from "@/components/post/PostFeed";
 
 const Profile = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const Profile = () => {
   if (isLoading || !user) return <Loader />;
 
   return (
-    <>
+    <div className="h-screen overflow-y-scroll scrollbar-hide">
       <Head>
         <title>Twitter - @{user.username || ""}</title>
 
@@ -29,7 +30,9 @@ const Profile = () => {
       <UserHero userId={id as string} />
 
       <UserBio userId={id as string} />
-    </>
+
+      <PostFeed userId={id as string} />
+    </div>
   );
 };
 

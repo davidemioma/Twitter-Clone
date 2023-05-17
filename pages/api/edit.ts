@@ -11,6 +11,8 @@ export default async function handler(
   try {
     const { currentUser } = await serverAuth(req, res);
 
+    if (!currentUser) throw new Error("Unauthorised");
+
     const { name, username, bio, profileImage, coverImage } = req.body;
 
     if (!name || !username) throw new Error("Missing fields!");
