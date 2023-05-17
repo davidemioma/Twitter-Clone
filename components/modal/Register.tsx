@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
 import Modal from "./Modal";
-import Input from "../Input";
+import Input from "../input/Input";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import useLoginModal from "@/hooks/useLoginModal";

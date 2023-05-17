@@ -8,7 +8,7 @@ const Home = () => {
       <Head>
         <title>Twitter</title>
 
-        <link rel="icon" href="/twitter.png" />
+        <link rel="icon" href="/assets/twitter.png" />
       </Head>
 
       <Header label="Home" />
