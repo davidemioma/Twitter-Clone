@@ -8,6 +8,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import ImageUpload from "./input/ImageUpload";
+import usePost from "@/hooks/usePost";
 
 interface Props {
   placeholder: string;
@@ -24,6 +25,8 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
 
   const { mutate: mutatePosts } = usePosts();
 
+  const { mutate: mutatePost } = usePost(postId!);
+
   const [body, setBody] = useState("");
 
   const [image, setImage] = useState("");
@@ -33,8 +36,12 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
   const onSubmit = useCallback(() => {
     setLoading(true);
 
+    const url = isComment ? `/api/comment?postId=${postId}` : "/api/posts";
+
+    const apiBody = isComment ? { body } : { body, image };
+
     axios
-      .post("/api/posts", { body, image })
+      .post(url, apiBody)
       .then(() => {
         toast.success("Tweet created");
 
@@ -43,6 +50,8 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
         setImage("");
 
         mutatePosts();
+
+        mutatePost();
       })
       .catch((err) => {
         toast.error(err.response.data.message || "Something went wrong!");
@@ -50,7 +59,7 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [body, mutatePosts]);
+  }, [body, mutatePosts, mutatePost]);
 
   return (
     <div className="px-5 py-2 border-b border-neutral-800">
@@ -58,7 +67,7 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
         <div className="flex items-start gap-4">
           <Avatar userId={currentuser?.id} />
 
-          <div className="flex-1 flex flex-col">
+          <div className="mt-3 flex-1 flex flex-col">
             <textarea
               className="bg-black w-full peer ring-0 resize-none outline-none placeholder-neutral-500 disabled:opacity-80"
               placeholder={placeholder}
@@ -70,13 +79,19 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
 
             <hr className="w-full h-[1px] mb-4 border-neutral-800 opacity-0 peer-focus:opacity-100" />
 
-            <div className="flex items-center justify-between">
-              <ImageUpload
-                forPost
-                value={image}
-                onChange={(image) => setImage(image)}
-                disabled={loading}
-              />
+            <div
+              className={`flex items-center ${
+                !isComment ? "justify-between" : "justify-end"
+              }`}
+            >
+              {!isComment && (
+                <ImageUpload
+                  forPost
+                  value={image}
+                  onChange={(image) => setImage(image)}
+                  disabled={loading}
+                />
+              )}
 
               <Button
                 label="Tweet"

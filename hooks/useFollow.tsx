@@ -13,10 +13,10 @@ const useFollow = (userId: string) => {
   const loginModal = useLoginModal();
 
   const isFollowing = useMemo(() => {
-    const list = currentUser.followingIds || [];
+    const list = currentUser?.followingIds || [];
 
     return list.includes(userId);
-  }, [currentUser.followingIds, userId]);
+  }, [currentUser?.followingIds, userId]);
 
   const toggleFollow = useCallback(async () => {
     if (!currentUser) return loginModal.onOpen();

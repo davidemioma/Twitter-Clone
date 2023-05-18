@@ -3,13 +3,14 @@ import Image from "next/image";
 import Avatar from "../Avatar";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
+import useLike from "@/hooks/useLike";
 import useLoginModal from "@/hooks/useLoginModal";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { Comment, Post, User } from "@prisma/client";
-import { AiOutlineMessage, AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineMessage, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface Props {
-  userId: string;
+  userId?: string;
   post: Post & {
     user: User;
     comments: Comment[];
@@ -23,6 +24,10 @@ const PostItem = ({ userId, post }: Props) => {
 
   const { data: currentUser } = useCurrentUser();
 
+  const { hasLiked, toggleLike } = useLike({
+    postId: post?.id,
+  });
+
   const createdAt = useMemo(() => {
     if (!post?.createdAt) return null;
 
@@ -31,7 +36,9 @@ const PostItem = ({ userId, post }: Props) => {
 
   const onLikeHandler = useCallback(() => {
     if (!currentUser) return loginModal.onOpen();
-  }, [currentUser, loginModal]);
+
+    toggleLike();
+  }, [currentUser, loginModal, toggleLike]);
 
   return (
     <div className="p-5 border-b border-neutral-800 cursor-pointer hover:bg-neutral-900 transition">
@@ -74,16 +81,20 @@ const PostItem = ({ userId, post }: Props) => {
         <div className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer transition hover:text-sky-500">
           <AiOutlineMessage size={22} />
 
-          <p>{post.comments.length || 0}</p>
+          <p>{post?.comments?.length}</p>
         </div>
 
         <div
           onClick={onLikeHandler}
           className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer transition hover:text-red-500"
         >
-          <AiOutlineHeart size={22} />
+          {hasLiked ? (
+            <AiFillHeart size={22} className="text-red-500" />
+          ) : (
+            <AiOutlineHeart size={22} />
+          )}
 
-          <p>{post.likesIds.length || 0}</p>
+          <p>{post?.likesIds?.length}</p>
         </div>
       </div>
     </div>
