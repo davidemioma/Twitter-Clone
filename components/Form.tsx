@@ -25,7 +25,7 @@ const Form = ({ placeholder, isComment, postId }: Props) => {
 
   const { mutate: mutatePosts } = usePosts();
 
-  const { mutate: mutatePost } = usePost(postId!);
+  const { mutate: mutatePost } = usePost(postId as string);
 
   const [body, setBody] = useState("");
 

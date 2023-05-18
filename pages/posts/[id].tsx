@@ -2,10 +2,11 @@ import React from "react";
 import Head from "next/head";
 import usePost from "@/hooks/usePost";
 import { useRouter } from "next/router";
+import Form from "@/components/Form";
 import Loader from "@/components/Loader";
 import Header from "@/components/Header";
 import PostItem from "@/components/post/PostItem";
-import Form from "@/components/Form";
+import CommentsFeed from "@/components/comment/CommentsFeed";
 
 const Post = () => {
   const router = useRouter();
@@ -29,6 +30,8 @@ const Post = () => {
       <PostItem post={post} />
 
       <Form postId={id as string} isComment placeholder="Tweet your reply" />
+
+      <CommentsFeed comments={post.comments} />
     </>
   );
 };
