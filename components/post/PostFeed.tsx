@@ -9,7 +9,7 @@ interface Props {
 }
 
 const PostFeed = ({ userId }: Props) => {
-  const { data: posts = [] } = usePosts(userId && userId);
+  const { data: posts = [] } = usePosts(userId as string);
 
   if (posts.length === 0) return <EmptyState label="No posts available" />;
 
