@@ -1,3 +1,4 @@
+import prisma from "@/lib/prismaDb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -11,7 +12,7 @@ export default async function handler(
 
     if (!id || typeof id !== "string") throw new Error("Invalid Id!");
 
-    const post = await prisma?.post.findUnique({
+    const post = await prisma.post.findUnique({
       where: {
         id,
       },

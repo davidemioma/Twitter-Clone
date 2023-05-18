@@ -35,6 +35,28 @@ export default async function handler(
       },
     });
 
+    try {
+      if (post?.userId) {
+        await prisma.notification.create({
+          data: {
+            userId: post.userId,
+            body: "Someone replied on your tweet",
+          },
+        });
+
+        await prisma.user.update({
+          where: {
+            id: post.userId,
+          },
+          data: {
+            hasNotification: true,
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
     res.status(200).json("Comment added successful");
   } catch (err) {
     res.status(400).end();

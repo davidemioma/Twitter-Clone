@@ -20,7 +20,7 @@ const Post = () => {
   return (
     <>
       <Head>
-        <title>Twitter - post</title>
+        <title>TwitterClone - post</title>
 
         <link rel="icon" href="/assets/twitter.png" />
       </Head>

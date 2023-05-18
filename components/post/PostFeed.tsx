@@ -2,6 +2,7 @@ import React from "react";
 import PostItem from "./PostItem";
 import { Post } from "@prisma/client";
 import usePosts from "@/hooks/usePosts";
+import EmptyState from "../EmptyState";
 
 interface Props {
   userId?: string;
@@ -9,6 +10,8 @@ interface Props {
 
 const PostFeed = ({ userId }: Props) => {
   const { data: posts = [] } = usePosts(userId && userId);
+
+  if (posts.length === 0) return <EmptyState label="No posts available" />;
 
   return (
     <>

@@ -1,3 +1,4 @@
+import prisma from "@/lib/prismaDb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -7,7 +8,7 @@ export default async function handler(
   if (req.method !== "GET") return res.status(405).end();
 
   try {
-    const users = await prisma?.user.findMany({
+    const users = await prisma.user.findMany({
       orderBy: {
         createdAt: "desc",
       },

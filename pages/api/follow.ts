@@ -34,6 +34,26 @@ export default async function handler(
       },
     });
 
+    try {
+      await prisma.notification.create({
+        data: {
+          userId,
+          body: `@${currentUser.username} started following you`,
+        },
+      });
+
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          hasNotification: true,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
     res.status(200).json("Successful");
   } catch (err) {
     res.status(400).end();
